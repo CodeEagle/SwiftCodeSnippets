@@ -1,4 +1,12 @@
 # SwiftCodeSnippets
-AutoDownload Code Snippets From https://github.com/burczyk/XcodeSwiftSnippets
+A Xcode swift snippet downloader 
 
-之后添加多一个读取Code Snippets的源，自己维护的
+##How to install and use?
+
+The best way of installing is by Alcatraz. Install Alcatraz followed by the instruction, restart your Xcode and press `⇧⌘9`. You can find `SwiftCodeSnippets` in the list and click the icon on left to install.
+
+AutoDownload Code Snippets From [XcodeSwiftSnippets](https://github.com/burczyk/XcodeSwiftSnippets)
+
+## License
+
+`SwiftCodeSnippets`  is published under MIT License
