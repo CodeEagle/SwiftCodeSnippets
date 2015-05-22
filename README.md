@@ -10,3 +10,9 @@ AutoDownload Code Snippets From [XcodeSwiftSnippets](https://github.com/burczyk/
 ## License
 
 `SwiftCodeSnippets`  is published under MIT License
+
+##Contact
+Feel free to get in touch.
+
+Weibo: [Xyb3rMa93](http://weibo.com/lvelo/home)
+Twitter: [@_SelfStudio](https://twitter.com/_SelfStudio)
