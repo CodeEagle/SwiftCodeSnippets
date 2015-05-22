@@ -9,6 +9,7 @@ import AppKit
 let rawUrl = "https://raw.githubusercontent.com"
 let directoryUrl = "https://github.com/burczyk/XcodeSwiftSnippets/tree/master/plist"
 let codeSnippetDirectory = "/Library/Developer/Xcode/UserData/CodeSnippets/"
+let configureDirectory = "/Library/Application Support/SelfStudio"
 var sharedPlugin: SwiftCodeSnippetsManager?
 
 class SwiftCodeSnippetsManager: NSObject {
@@ -45,13 +46,65 @@ extension SwiftCodeSnippetsManager {
                             }
                         }
                     }
-                    self.downloadFrom(urls, done: { () -> () in
-                        println("SwiftCodeSnippetsManager updat done")
-                    })
+                    let filePath = self.appConfigure()
+                    var toDownloads = [String]()
+                    var toDeletes = [String]()
+                    var nowArray = urls as NSArray
+                    if let oldArray = NSArray(contentsOfFile: filePath) {
+                        for item in oldArray {
+                            if !nowArray.containsObject(item) {
+                                toDeletes.append(item as! String)
+                            }
+                        }
+                        for item in nowArray {
+                            if !oldArray.containsObject(item) {
+                                toDownloads.append(item as! String)
+                            }
+                        }
+                    }
+                    
+                    if urls.count > 0 {
+                        nowArray.writeToFile(filePath, atomically: true)
+                    }
+                    
+                    if toDownloads.count > 0 {
+                        self.downloadFrom(toDownloads, done: { () -> () in
+                            println("😀😀😀😀😀😀SwiftCodeSnippetsManager updat done")
+                        })
+                    }else{
+                        println("😀😀😀😀😀😀SwiftCodeSnippetsManager not downloading")
+                    }
+                    
+                    if toDeletes.count > 0 {
+                        self.deleteFiles(toDeletes)
+                    }else{
+                        println("😀😀😀😀😀😀SwiftCodeSnippetsManager not delete files")
+                    }
+
+                    
             }
         })
     }
     
+    func appConfigure()->String{
+        let dir = NSHomeDirectory().stringByAppendingPathComponent(configureDirectory)
+        let fm = NSFileManager.defaultManager()
+        var isDir : ObjCBool = true
+        if !fm.fileExistsAtPath(dir, isDirectory: &isDir) {
+            fm.createDirectoryAtPath(dir, withIntermediateDirectories: false, attributes: nil, error: nil)
+        }
+        var configureFile = dir.stringByAppendingPathComponent("conf")
+        return configureFile
+    }
+    
+    func deleteFiles(items:[String]){
+        for item in items {
+            let fm = NSFileManager.defaultManager()
+            let home = NSHomeDirectory().stringByAppendingPathComponent(codeSnippetDirectory)
+            let path = home.stringByAppendingPathComponent(item)
+            fm.removeItemAtPath(path, error: nil)
+        }
+    }
     
     func downloadFrom(var urls:[String],done:()->()){
         if urls.count > 0 {
